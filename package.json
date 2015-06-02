@@ -1,6 +1,6 @@
 {
   "name": "gyb",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
@@ -12,6 +12,12 @@
     "ejs": "~2.3.1",
     "express": "~4.12.4",
     "morgan": "~1.5.3",
-    "serve-favicon": "~2.2.1"
+    "serve-favicon": "~2.2.1",
+    "request": "*",
+    "log4js": "*",
+    "config": "*",
+    "async": "*",
+    "xml2json": "*",
+    "mongoose":"*"
   }
 }
