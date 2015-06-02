@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var conf = require("./lib/config");
 var DB = require("./lib/db");
-
+var sign = require("./lib/sign");
 /*打开数据库连接*/
 DB.Open();
 
@@ -27,6 +27,25 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+/**
+ * 验签拦截器
+ */
+app.use(function (req, res, next) {
+
+    sign.Sign(req, function (result) {
+
+        console.log(result);
+        if (result) {
+            next();
+        }
+        else {
+            var err = new Error('sign error');
+            err.status = 401;
+            next(err);
+        }
+    });
+});
+
 app.use('/', routes);
 app.use('/users', users);
 
@@ -43,24 +62,24 @@ app.use(function (req, res, next) {
 // will print stacktrace
 if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {
+
+        err.status = err.status || 500;
+        res.status(err.status);
+        var error = {status: err.status, message: err.message};
+        res.send(JSON.stringify(error));
+    });
+}
+else {
+// production error handler
+// no stacktraces leaked to user
+    app.use(function (err, req, res, next) {
         res.status(err.status || 500);
         res.render('error', {
             message: err.message,
-            error: err
+            error: {}
         });
     });
 }
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function (err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: {}
-    });
-});
-
 // 获取端口号
 var port = conf.port();
 

@@ -18,6 +18,7 @@
     "config": "*",
     "async": "*",
     "xml2json": "*",
-    "mongoose":"*"
+    "mongoose": "*",
+    "assert": "*"
   }
 }
