@@ -1,6 +1,7 @@
 var helper = require("./helper");
 var config = require("./config");
 
+
 /**
  * 验签操作
  * @param req  request
@@ -8,6 +9,10 @@ var config = require("./config");
  * @constructor
  */
 exports.Sign = function (req, callback) {
+
+    if (!config.Sign()) {
+        callback(true);
+    }
 
     /*
      * 时间戳+加APPKey+平台进行Md5加密，全部小写
@@ -25,9 +30,7 @@ exports.Sign = function (req, callback) {
 
     var appKey = config.getAppKey(platform);
 
-
-    //platform=iphone&time=20140309112229&appkey=3452cb52d98a987e798e071d798e090d
-    var str ="platform="+platform+"&time="+time+"&appkey=3452cb52d98a987e798e071d798e090d"
+    var str = "platform=" + platform + "&time=" + time + "&appkey=" + appKey;
     var d = helper.md5(str);
     console.log(str, d);
     return callback(d == sign);

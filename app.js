@@ -40,7 +40,7 @@ app.use(function (req, res, next) {
         }
         else {
             var err = new Error('sign error');
-            err.status = 401;
+            err.status = 403;
             next(err);
         }
     });

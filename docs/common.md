@@ -4,10 +4,9 @@
 接口参数传递方式
 
 参数传递方式:
-接口分为系统参数和业务参数两部分，其中系统参数通过url方式传递，业务参数通过post方式传递；
-
-调用示例：
-接口地址：http://api.baidu.com/password/login 有两个业务参数 username和password
+接口分为系统参数和业务参数两部分，其中系统参数通过url方式传递，业务参数通过post方式传递；  <br/>
+调用示例：  <br/>
+接口地址 http://api.baidu.com/password/login 有两个业务参数 username和password  <br/>
 则调用方式为：
 
     curl -post http://api.baidu.com/password/login?platform=android&macid=12.2323.3&wantype=1&screenwidth=10&screenheight=20
@@ -17,7 +16,14 @@
         'password":"123456"
     }
 
+###接口返回数据
+当请求成功接口返回数据为:
 
+    {"status":200,"message":"","data":{}}
+status:状态码 message:发生异常是的错误消息 data:业务数据字段
+
+『注意：当status为非200状态时,没有data节点』
+ 系统状态码见下表
 
 ###系统参数
 
@@ -57,3 +63,14 @@ platform=iphone&time=20140309112229&appkey=3452cb52d98a987e798e071d798e090d
 android|	b87d8768a948fde31065a12341808c98
 iphone|	3452cb52d98e071d798e090d8a987e79
 ipad|	144c7ea5ba671d5e5e2ffcc72d74e37a
+
+
+###系统状态码
+
+状态码|描述
+--|---
+200|成功
+401|登录失败
+403|验签失败
+500|系统内部错误
+407|参数错误

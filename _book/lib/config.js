@@ -25,4 +25,13 @@ conf.getAppKey = function (platform) {
     return appKeys[platform];
 };
 
+/**
+ * 验签开关
+ * @returns {*} ture:开启验签 false:关闭
+ * @constructor
+ */
+conf.Sign = function () {
+    return config.get("sign");
+}
+
 module.exports = conf;

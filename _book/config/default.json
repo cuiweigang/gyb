@@ -3,6 +3,7 @@
   "port": 3100,
   /*供应宝数据库连接字符串*/
   "mongodb": "mongodb://localhost/gyb",
+  "sign": true,
   "appKey": {
     "android": "5f4dcc3b5aa765d61d8327deb882cf99"
   }
