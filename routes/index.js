@@ -17,13 +17,14 @@ var User = require("../modules/User");
 
 
 /* GET home page. */
-router.get('/', function (req, res) {
-    var user=new User();
-    user.name="cwg123";
-    user.password="1234";
+router.all('/', function (req, res) {
+    var user = new User();
+    user.name = "cwg123";
+    user.password = "1234";
     user.save();
 
     res.render('index', {title: 'Express'});
 });
+
 
 module.exports = router;
