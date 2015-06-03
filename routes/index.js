@@ -4,9 +4,6 @@ var log = require("../lib/log");
 
 var config = require("config");
 var conf = require("../lib/config");
-var mongoose = require('mongoose');    //引用mongoose模块
-global.db = mongoose.createConnection("mongodb://localhost/mongoose"); //创建一个数据库连接
-
 //db.on('error', function (err) {
 //    console.log(err);
 //});
@@ -21,10 +18,10 @@ var User = require("../modules/User");
 
 /* GET home page. */
 router.get('/', function (req, res) {
-    //var user=new User();
-    //user.name="cwg123";
-    //user.password="1234";
-    //user.save();
+    var user=new User();
+    user.name="cwg123";
+    user.password="1234";
+    user.save();
 
     res.render('index', {title: 'Express'});
 });
