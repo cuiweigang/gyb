@@ -1,4 +1,4 @@
-var module = require("../lib/sign");
+var module = require("../lib/common");
 var helper = require("../lib/helper");
 var config = require("../lib/config");
 var assert = require("assert");

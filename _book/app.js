@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var conf = require("./lib/config");
 var DB = require("./lib/db");
-var common = require("./lib/common");
+var sign = require("./lib/common");
 /*打开数据库连接*/
 DB.Open();
 

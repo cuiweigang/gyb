@@ -7,7 +7,6 @@ var log = require("./log");
  * @constructor
  */
 exports.Open = function () {
-
     global.db = mongoose.createConnection(conf.dbConn()); //创建一个数据库连接
     db.on('error', function (err) {
         log.error("数据库连接失败:" + err);
