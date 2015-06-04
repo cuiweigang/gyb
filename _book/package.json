@@ -19,6 +19,9 @@
     "async": "*",
     "xml2json": "*",
     "mongoose": "*",
-    "assert": "*"
+    "assert": "*",
+    "request": "*",
+    "date-format": "*",
+    "async":"*"
   }
 }

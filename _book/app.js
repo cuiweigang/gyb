@@ -33,9 +33,25 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(function (req, res, next) {
 
     common.Sign(req, function (result) {
-
+        result = true;
         console.log(result);
         if (result) {
+
+            req.Common = {
+                time: req.query.time,
+                platform: req.query.platform,
+                sign: req.query.sign,
+                osVersion: req.query.osversion,
+                macId: req.query.macid,
+                imei: req.query.imei,
+                wanType: req.query.wanType,
+                screenWidth: req.query.screenwidth,
+                screenHeight: req.query.screenheight,
+                version: req.query.version,
+                ip: req.query.ip,
+                token: req.query.token
+            };
+
             next();
         }
         else {
@@ -45,6 +61,24 @@ app.use(function (req, res, next) {
         }
     });
 });
+
+/**
+ * 用户登录操作
+ */
+app.use(function (req, res, next) {
+    common.Login(req, function (isSuccess, userInfo) {
+        if (isSuccess) {
+            req.User = userInfo;
+            next();
+        }
+        else
+        {
+            var err = new Error('login error');
+            err.status = 401;
+            next(err);
+        }
+    });
+})
 
 app.use('/', routes);
 app.use('/users', users);

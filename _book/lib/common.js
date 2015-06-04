@@ -35,3 +35,16 @@ exports.Sign = function (req, callback) {
     console.log(str, d);
     return callback(d == sign);
 };
+
+
+/**
+ * 用户登录
+ * @param req request
+ * @param callback callback(isSuccess,userInfo)
+ * isSuccess:登录成功 ture，否则 false
+ * @constructor
+ */
+exports.Login = function (req, callback) {
+    var user = {uid: 0, name: "cuiweigang", token: ""};
+    callback(true, user);
+};
