@@ -27,16 +27,19 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use("/doc",express.static(path.join(__dirname, 'doc')));
+app.use("/doc", express.static(path.join(__dirname, 'doc')));
 
 /**
  * 验签拦截器
  */
 app.use(function (req, res, next) {
 
+    if (req.path = "/") {
+        return next();
+    }
+
     common.Sign(req, function (result) {
 
-        console.log(result);
         if (result) {
 
             req.Common = {
@@ -54,12 +57,12 @@ app.use(function (req, res, next) {
                 token: req.query.token
             };
 
-            next();
+            return next();
         }
         else {
             var err = new Error('sign error');
             err.status = 403;
-            next(err);
+            return next(err);
         }
     });
 });
@@ -67,19 +70,20 @@ app.use(function (req, res, next) {
 /**
  * 用户登录操作
  */
-//app.use(function (req, res, next) {
-//    common.Login(req, function (isSuccess, userInfo) {
-//        if (isSuccess) {
-//            req.User = userInfo;
-//            next();
-//        }
-//        else {
-//            var err = new Error('login error');
-//            err.status = 401;
-//            next(err);
-//        }
-//    });
-//})
+app.use(function (req, res, next) {
+    common.Login(req, function (isSuccess, userInfo) {
+
+        if (isSuccess) {
+            req.User = userInfo;
+           return next();
+        }
+        else {
+            var err = new Error('login error');
+            err.status = 401;
+           return next(err);
+        }
+    });
+});
 
 app.use('/', routes);
 app.use('/users', users);
@@ -97,7 +101,6 @@ app.use(function (req, res, next) {
 // will print stacktrace
 if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {
-
         err.status = err.status || 500;
         res.status(err.status);
         var error = {status: err.status, message: err.message};

@@ -6,5 +6,12 @@
   "sign": true,
   "appKey": {
     "android": "5f4dcc3b5aa765d61d8327deb882cf99"
-  }
+  },
+  "noLoginPage": [
+    /*不需要登陆验证的页面*/
+    "/",
+    "/api/passport/login",
+    "/api/passport/login",
+    "/api/passport/register"
+  ]
 }

@@ -31,11 +31,9 @@ var model = require("../models/model");
  *       "lastname": "Doe"
  *     }
  */
-router.all('/', function (req, res) {
-    res.render('index', {title: 'Express'});
+router.get('/', function (req, res) {
+    res.send("零供宝api");
 });
-
-
 
 
 module.exports = router;
