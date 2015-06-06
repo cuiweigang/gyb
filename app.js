@@ -36,7 +36,7 @@ app.use("/doc", express.static(path.join(__dirname, 'doc')));
  */
 app.use(function (req, res, next) {
 
-    if (req.path = "/") {
+    if (req.path == "/") {
         return next();
     }
 
