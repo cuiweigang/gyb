@@ -12,12 +12,14 @@ DB.Open();
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var passport = require("./routes/passport");
 
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.set("dev", 'development');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -75,18 +77,19 @@ app.use(function (req, res, next) {
 
         if (isSuccess) {
             req.User = userInfo;
-           return next();
+            return next();
         }
         else {
             var err = new Error('login error');
             err.status = 401;
-           return next(err);
+            return next(err);
         }
     });
 });
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/api/passport', passport);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
