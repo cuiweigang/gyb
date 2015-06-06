@@ -3,10 +3,8 @@ var router = express.Router();
 
 var model = require("../models/model");
 
-
-/* GET home page. */
-router.all('/', function (req, res) {
-    res.render('index', {title: 'Express'});
+router.get('/', function (req, res) {
+    res.send("零供宝api");
 });
 
 

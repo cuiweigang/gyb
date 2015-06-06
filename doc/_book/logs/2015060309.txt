@@ -1,0 +1,6 @@
+[2015-06-03 09:50:14.541] [ERROR] gyb - 数据库连接失败:MongoError: connect ECONNREFUSED
+[2015-06-03 09:50:54.150] [ERROR] gyb - 数据库连接失败:MongoError: connect ECONNREFUSED
+[2015-06-03 09:51:28.016] [ERROR] gyb - 数据库连接失败:MongoError: connect ECONNREFUSED
+[2015-06-03 09:51:39.914] [ERROR] gyb - 数据库连接失败:MongoError: connect ECONNREFUSED
+[2015-06-03 09:53:41.761] [ERROR] gyb - 数据库连接成功
+[2015-06-03 09:58:07.758] [ERROR] gyb - 数据库连接成功
