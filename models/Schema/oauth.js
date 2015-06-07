@@ -22,7 +22,7 @@ var TokenSchema = new Schema({
  */
 TokenSchema.statics.getUserId = function (platform, token, callback) {
 
-    this.findOne({token: token})
+    this.findOne({token: token, platform: platform})
         .sort({_id: -1})
         .exec(function (err, item) {
             console.log("getUserId", err, item);
