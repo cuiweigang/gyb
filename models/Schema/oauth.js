@@ -21,24 +21,26 @@ var TokenSchema = new Schema({
  * @param callback(userId) 当用户Id存在，说明登录正常
  */
 TokenSchema.statics.getUserId = function (platform, token, callback) {
-    this.find({platform: platform, token: token}, function (err, items) {
-        //console.log(items);
-        if (items == null || items.length <= 0) {
-            return callback(null);
-        }
-        else {
-            var item = items[0];
-            //console.log("typeof", typeof(item.expire));
-            if (item.expire >= Date.now()) {
-                //  console.log(true);
-                return callback(item.userId);
-            }
-            else {
-                //console.log(false);
+
+    this.findOne({token: token})
+        .sort({_id: -1})
+        .exec(function (err, item) {
+            console.log("getUserId", err, item);
+            if (!item) {
                 return callback(null);
             }
-        }
-    });
+            else {
+                console.log("getUserId_01", item);
+                if (item.expire >= Date.now()) {
+
+                    console.log("getUserId_02");
+                    return callback(item.userId);
+                }
+                else {
+                    return callback(null);
+                }
+            }
+        });
 };
 
 

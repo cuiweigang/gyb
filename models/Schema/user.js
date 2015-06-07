@@ -10,7 +10,15 @@ var UserSchema = new Schema({
     password: {type: String}, /*密码*/
     name: {type: String}, /*用户名称*/
     headImg: {type: String}, /*用户头像*/
-    inDate: {type: Date} /*增加时间*/
+    inDate: {type: Date}, /*增加时间*/
+    type: {type: Number}, /*用户类型 0:未填写 1:采购商 2：供应商 3:品牌商 4:服务商*/
+    gender: {type: String}, /*性别*/
+    dateOfBirth: {type: String}, /*生日*/
+    Company: {type: String}, /*公司*/
+    trade: {type: String},  /*行业'y*/
+    job: {type: String},  /*工作职务*/
+    experience: {type: String}  /*工作经历*/
+
 });
 
 /**

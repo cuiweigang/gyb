@@ -5,8 +5,6 @@
 
 var express = require('express');
 var router = express.Router();
-var sendResult = require("../lib/result");
-
 var common = require("../lib/common");
 var model = require("../models/model");
 var async = require("async");
@@ -60,23 +58,20 @@ function checkSmsCode(cellphone, smsCode, callback) {
 router.post("/smsCode", function (req, res) {
     var cellphone = req.body.cellphone;
 
-    /*判断手机格式
-     * 正确生成验证码
-     * 存醋到数据库
-     * 并返回验证码
-     * */
     if (common.IsCellphone(cellphone)) {
 
         var smsCode = new model.SmsCode();
         smsCode.inDate = Date.now();
         smsCode.smsCode = "1234";
         smsCode.cellphone = cellphone;
-        smsCode.save();
-
-        return res.send(sendResult.success(null, "验证码已发送到您的手机"));
+        smsCode.save(function (err, item) {
+            console.log("发送短信验证码");
+            return res.sendSuccess(null, "验证码已发送到您的手机");
+        });
     }
     else {
-        return res.send(sendResult.parameterError("验证码错误"));
+        console.log("验证码错误");
+        return res.sendError("验证码错误");
     }
 });
 
@@ -119,9 +114,12 @@ router.post("/checkSmsCode", function (req, res) {
 
     checkSmsCode(cellphone, smsCode, function (result) {
         console.log("result", result);
-        var data = result ? sendResult.success(null, "验证成功") : sendResult.parameterError("验证失败");
-        console.log(data);
-        return res.send(data);
+
+        if (result) {
+            res.sendSuccess(null, "验证成功");
+        } else {
+            res.sendError("验证失败");
+        }
     });
 });
 
@@ -225,16 +223,16 @@ router.post("/register", function (req, res) {
             if (err) {
 
                 console.log("err", err);
-                res.send(sendResult.error(err));
+                res.sendError(err);
 
             }
             else {
                 var data = {
                     token: reslut.token.token,
                     name: reslut.user.name
-                }
+                };
 
-                res.send(sendResult.success(data, "注册成功"));
+                res.sendSuccess(data, "注册成功");
             }
         }
     );
@@ -267,7 +265,7 @@ router.post("/register", function (req, res) {
  *        "name": "13211111112", 用户名
  *        "token": "5573c8f67164df0b0ca367d6" 用户token,根据token获取用户相关信息
  *      },
- *      "message": "注册成功" 
+ *      "message": "注册成功"
  *    }
  */
 router.post("/login", function (req, res) {
@@ -284,6 +282,7 @@ router.post("/login", function (req, res) {
             },
             function (result, cb) {
 
+                console.log(result);
                 // 生成登录信息
                 var token = model.OAuth();
                 token.userId = result._id;
@@ -300,11 +299,13 @@ router.post("/login", function (req, res) {
             }
         ], function (err, result) {
 
+
+            console.log("用户登录成功",result);
             // 返回结果
             if (err) {
 
                 console.log("err", err);
-                res.send(sendResult.error(err));
+                res.sendError(err);
             }
             else {
                 var data = {
@@ -312,7 +313,7 @@ router.post("/login", function (req, res) {
                     name: result.user.name
                 }
 
-                res.send(sendResult.success(data, "注册成功"));
+                res.sendSuccess(data, "注册成功");
             }
         }
     );

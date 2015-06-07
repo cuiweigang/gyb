@@ -7,12 +7,15 @@ var bodyParser = require('body-parser');
 var conf = require("./lib/config");
 var DB = require("./lib/db");
 var common = require("./lib/common");
+var SendResult = require("./lib/sendResult");
+var filter = require("./lib/filter"); // 过滤器
 /*打开数据库连接*/
 DB.Open();
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
 var passport = require("./routes/passport");
+var account = require("./routes/account"); //用户账户
+
 
 var app = express();
 
@@ -31,11 +34,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use("/doc", express.static(path.join(__dirname, 'doc')));
 
-/**
- * 验签拦截器
- */
-app.use(function (req, res, next) {
+app.use(SendResult()); //注入返回消息
 
+// 验签拦截器
+app.use(filter.sign);
+app.use(filter.login);
+
+app.use(function (req, res, next) {
     req.common = {
         time: req.query.time,
         platform: req.query.platform,
@@ -51,53 +56,23 @@ app.use(function (req, res, next) {
         token: req.query.token
     };
 
-    if (req.path == "/") {
-        return next();
-    }
-    else {
-        common.Sign(req, function (sendResult) {
-            if (sendResult) {
-                return next();
-            }
-            else {
-                var err = new Error('sign error');
-                err.status = 403;
-                return next(err);
-            }
-        });
-    }
-});
-
-/**
- * 用户登录操作
- */
-app.use(function (req, res, next) {
-    common.Login(req, function (isSuccess, userInfo) {
-
-        if (isSuccess) {
-            req.user = userInfo;
-            return next();
-        }
-        else {
-            var err = new Error('login error');
-            err.status = 401;
-            return next(err);
-        }
-    });
+    next();
 });
 
 app.use('/', routes);
-app.use('/users', users);
 app.use('/api/passport', passport);
+app.use('/api/account', account);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
+    console.log("404Error");
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
 
 app.use(function (err, req, res, next) {
+    console.log("error")
     err.status = err.status || 500;
     res.status(err.status);
     console.error(err.stack);
