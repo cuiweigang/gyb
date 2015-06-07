@@ -5,7 +5,7 @@ var config = require("./config");
 /**
  * 验签操作
  * @param req  request
- * @param callback(result) result-> true or false
+ * @param callback(sendResult) sendResult-> true or false
  * @constructor
  */
 exports.Sign = function (req, callback) {

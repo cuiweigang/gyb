@@ -36,37 +36,36 @@ app.use("/doc", express.static(path.join(__dirname, 'doc')));
  */
 app.use(function (req, res, next) {
 
+    req.common = {
+        time: req.query.time,
+        platform: req.query.platform,
+        sign: req.query.sign,
+        osVersion: req.query.osversion,
+        macId: req.query.macid,
+        imei: req.query.imei,
+        wanType: req.query.wanType,
+        screenWidth: req.query.screenwidth,
+        screenHeight: req.query.screenheight,
+        version: req.query.version,
+        ip: req.query.ip,
+        token: req.query.token
+    };
+
     if (req.path == "/") {
         return next();
     }
-
-    common.Sign(req, function (result) {
-
-        if (result) {
-
-            req.Common = {
-                time: req.query.time,
-                platform: req.query.platform,
-                sign: req.query.sign,
-                osVersion: req.query.osversion,
-                macId: req.query.macid,
-                imei: req.query.imei,
-                wanType: req.query.wanType,
-                screenWidth: req.query.screenwidth,
-                screenHeight: req.query.screenheight,
-                version: req.query.version,
-                ip: req.query.ip,
-                token: req.query.token
-            };
-
-            return next();
-        }
-        else {
-            var err = new Error('sign error');
-            err.status = 403;
-            return next(err);
-        }
-    });
+    else {
+        common.Sign(req, function (sendResult) {
+            if (sendResult) {
+                return next();
+            }
+            else {
+                var err = new Error('sign error');
+                err.status = 403;
+                return next(err);
+            }
+        });
+    }
 });
 
 /**
@@ -76,7 +75,7 @@ app.use(function (req, res, next) {
     common.Login(req, function (isSuccess, userInfo) {
 
         if (isSuccess) {
-            req.User = userInfo;
+            req.user = userInfo;
             return next();
         }
         else {
@@ -98,29 +97,15 @@ app.use(function (req, res, next) {
     next(err);
 });
 
-// error handlers
+app.use(function (err, req, res, next) {
+    err.status = err.status || 500;
+    res.status(err.status);
+    console.error(err.stack);
+    var error = {status: err.status, message: err.message};
+    res.send(error);
+});
 
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-    app.use(function (err, req, res, next) {
-        err.status = err.status || 500;
-        res.status(err.status);
-        var error = {status: err.status, message: err.message};
-        res.send(JSON.stringify(error));
-    });
-}
-else {
-// production error handler
-// no stacktraces leaked to user
-    app.use(function (err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: {}
-        });
-    });
-}
+
 // 获取端口号
 var port = conf.port();
 

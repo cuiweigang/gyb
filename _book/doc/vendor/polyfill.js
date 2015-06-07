@@ -52,10 +52,10 @@ Array.prototype.forEach = function (callback, thisArg) {
    throw new TypeError(" this is null or not defined");
  }
 
- // 1. Let O be the result of calling ToObject passing the |this| value as the argument.
+ // 1. Let O be the sendResult of calling ToObject passing the |this| value as the argument.
  var O = Object(this);
 
- // 2. Let lenValue be the result of calling the Get internal method of O with the argument "length".
+ // 2. Let lenValue be the sendResult of calling the Get internal method of O with the argument "length".
  // 3. Let len be ToUint32(lenValue).
  var len = O.length >>> 0;
 
@@ -80,12 +80,12 @@ Array.prototype.forEach = function (callback, thisArg) {
 
    // a. Let Pk be ToString(k).
    //   This is implicit for LHS operands of the in operator
-   // b. Let kPresent be the result of calling the HasProperty internal method of O with argument Pk.
+   // b. Let kPresent be the sendResult of calling the HasProperty internal method of O with argument Pk.
    //   This step can be combined with c
    // c. If kPresent is true, then
    if (k in O) {
 
-     // i. Let kValue be the result of calling the Get internal method of O with argument Pk.
+     // i. Let kValue be the sendResult of calling the Get internal method of O with argument Pk.
      kValue = O[k];
 
      // ii. Call the Call internal method of callback with T as the this value and
