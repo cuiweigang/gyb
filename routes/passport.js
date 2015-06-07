@@ -264,10 +264,10 @@ router.post("/register", function (req, res) {
  *    {
  *      "code": 200,
  *      "data": {
- *        "name": "13211111112",
- *        "token": "5573c8f67164df0b0ca367d6"
+ *        "name": "13211111112", 用户名
+ *        "token": "5573c8f67164df0b0ca367d6" 用户token,根据token获取用户相关信息
  *      },
- *      "message": "注册成功"
+ *      "message": "注册成功" 
  *    }
  */
 router.post("/login", function (req, res) {
